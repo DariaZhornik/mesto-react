@@ -1,4 +1,4 @@
-import {ownerInfo} from '../utils/utils'
+import {ownerInfo} from './utils'
 
 class Api {
     constructor(ownerInfo) {

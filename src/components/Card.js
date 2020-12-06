@@ -1,4 +1,9 @@
 function Card (props) {
+    
+    function handleClick() {
+        props.onCardClick(props.card);
+      }  
+
     if (props.card) {
     return (
     <div className="element">
@@ -16,10 +21,6 @@ function Card (props) {
     else {
         return null
     }
-
-    function handleClick() {
-        props.onCardClick(props.card);
-      }  
 }
 
 export default Card

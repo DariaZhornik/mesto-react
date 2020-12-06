@@ -2,8 +2,16 @@ import React, {useState} from 'react'
 import PopupWithForm from './PopupWithForm'
 import Main from './Main'
 import ImagePopup from './ImagePopup'
+import Header from './Header.js';
+import Footer from './Footer.js';
 
 function App() {
+
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
+  const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState(false)
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+  const [selectedCard, setSelectedCard] = useState()
+
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true) 
   }
@@ -27,14 +35,11 @@ function App() {
     setSelectedCard(card)
   }
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
-  const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = useState(false)
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [selectedCard, setSelectedCard] = useState()
-
   return (
     <>
+  <Header />
   <Main onEditProfile={handleEditProfileClick} onEditAvatar={handleEditAvatarClick} onAddPlace={handleAddPlaceClick} onCardClick={handleCardClick}/>
+  <Footer />
   <PopupWithForm title="Редактировать профиль" name="edit" button="Сохранить" isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
       <div>
         <input name="name" type="text" required placeholder="Имя" className="popup__input popup__text_name" id="person-name" minLength={2} maxLength={40} />
@@ -61,7 +66,6 @@ function App() {
   </PopupWithForm> */}
   <ImagePopup name="photo" card={selectedCard} onClose={closeAllPopups} >
   </ImagePopup>
-  <template className="element-template" />
   </>
   );
 }
