@@ -1,36 +1,58 @@
-import React from 'react'
-import Jacques from '../images/Jacques.jpg'
+import React, { useState, useEffect } from 'react'
+import { api } from '../utils/Api'
+import Card from './Card'
 
-function Main() {
+function Main(props) {
 
-    function handleEditAvatarClick() {
-        document.querySelector('.popup_type_edit-photo').classList.add('popup_is-opened');
-    }
+  const [userName, setUserName] = useState('')
+  const [userDescription, setUserDescription] = useState('')
+  const [userAvatar, setUserAvatar] = useState('')
+  const [cards, setCards] = useState([])
 
-    function handleEditProfileClick() {
-        document.querySelector('.popup_type_edit').classList.add('popup_is-opened');
-    }
+  useEffect(() => {
+    api.getInitialCards()
+      .then((result) => {
+        const cards = result.map((card) => {
+          return {
+            id: card._id,
+            src: card.link,
+            name: card.name,  
+            likes: card.likes
+          };
+        });
+        setCards(cards)
+      })
+  }, []);
 
-    function handleAddPlaceClick() {
-        document.querySelector('.popup_type_add').classList.add('popup_is-opened');
-    }
+  useEffect(() => {
+    api.getUserInfo()
+      .then((result) => {
+        setUserName(result.name);
+        setUserDescription(result.about);
+        setUserAvatar(result.avatar);
+      })
+  }, []);
 
     return(
 <main className="content">
     <section className="profile">
       <div className="profile__person">
-        <div className="profile__image-wrap">
-          <img src={Jacques} alt="Жак-Ив Кусто" className="profile__image" onClick={handleEditAvatarClick()}/>
+        <div className="profile__image-wrap" onClick={props.onEditAvatar}>
+          <img src={userAvatar} alt={userName} className="profile__image" />
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">Жак-Ив Кусто</h1>
-          <p className="profile__subtitle">Исследователь океана</p>
-          <button className="button profile__edit-btn" type="button" onClick={handleEditProfileClick()}/>
+          <h1 className="profile__title">{userName}</h1>
+          <p className="profile__subtitle">{userDescription}</p>
+          <button className="button profile__edit-btn" type="button" onClick={props.onEditProfile}/>
         </div>
       </div>
-      <button className="button profile__add-btn" type="button" onClick={handleAddPlaceClick()}/>
+      <button className="button profile__add-btn" type="button" onClick={props.onAddPlace}/>
     </section>
-    <section className="elements">    
+    <section className="elements">  
+      {cards.map((card) => {
+        return <Card key={card.id} card={card} onCardClick={props.onCardClick} /> 
+      })
+      }    
     </section>
   </main>
     )

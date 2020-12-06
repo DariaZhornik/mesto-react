@@ -1,6 +1,7 @@
 .profile__image-wrap {
     position: relative;
     display: flex;
+    cursor: pointer;
 
 }
 
@@ -12,5 +13,6 @@
     height: 100%;
     position: absolute;
     z-index: 5;
+    cursor: pointer;
 }
 
